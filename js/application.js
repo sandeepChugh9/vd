@@ -2,7 +2,6 @@
     'use strict';
 
     var WorkspaceController = require('./controllers/workspace'),
-        QuoteController = require('./controllers/quotecontroller'),
         ProfileController = require('./controllers/profilecontroller'),
         MatchScreenController = require('./controllers/matchscreencontroller'),
         HomeScreenController = require('./controllers/homescreencontroller'),
@@ -94,7 +93,6 @@
         this.router = new Router();
 
         this.workspaceController = new WorkspaceController();
-        this.QuoteController = new QuoteController();
         this.ProfileController = new ProfileController();
         this.HomeController = new HomeScreenController();
         this.MatchScreenController = new MatchScreenController();
@@ -207,14 +205,6 @@
                 self.container.innerHTML = "";
                 self.workspaceController.render(self.container, self, data);
                 utils.toggleBackNavigation(false);
-            });
-
-            // ToDo: As discussed, the home route should be registered for the optin screen which should route to Santa Secret panel when required.
-            // Santa Secret Panel Is Home
-            this.router.route('/quote', function (data) {
-                self.container.innerHTML = "";
-                self.QuoteController.render(self.container, self, data);
-                utils.toggleBackNavigation(true);
             });
 
             this.router.route('/homescreen', function (data) {
