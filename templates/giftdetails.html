@@ -1,0 +1,24 @@
+<div class="giftDetailsWrapper">
+	<div class="ssOffer section group" data-oid="{{giftDetailsPage.offerheading}}">
+		<div class="col span_1_of_3 offerIcon"></div>
+		<div class="col span_2_of_3 offerContent">
+			<p class="ohead">{{giftDetailsPage.offerheading}}</p>
+			<p class="osubhead ellipsis">{{giftDetailsPage.offertext}}</p>
+		</div>
+	</div>
+
+	<div class="giftCodeValue align-center">{{giftDetailsPage.hikeCouponCode}}</div>
+
+	<div class="tcContainer">
+		<h3>Terms and Conditions</h3>
+		<div class="overflowContainer">
+			<ul class="giftTandC">
+				{{#giftDetailsPage.offerterms}}
+					<li class="termRow">{{.}}</li>
+				{{/giftDetailsPage.offerterms}}
+			</ul>
+		</div>	
+	</div>
+</div>
+<div class="giftConfirmSend align-center {{giftDetailsPage.giftStatus}}">{{giftDetailsPage.buttonHeading}}</div>
+<div class="giftsEnabledBg"></div>

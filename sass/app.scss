@@ -1,0 +1,542 @@
+
+@import 'quote';
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:before, blockquote:after,q:before, q:after {
+  content: '';
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+input, textarea, select{font-family:inherit;}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  font-size: 14px; }
+
+  @font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 200;
+  src: url('file:///android_asset/fonts/Roboto-Thin.ttf') format('truetype'),
+
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  src:  url('file:///android_asset/fonts/Roboto-Light.ttf')  format('truetype');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: url('file:///android_asset/fonts/Roboto-Regular.ttf')  format('truetype');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  src: url('file:///android_asset/fonts/Roboto-Medium.ttf')  format('truetype') ;
+}
+
+::-webkit-scrollbar { 
+    display: none; 
+}
+
+#header {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  height: 0px;
+  background-color: #444;
+  color: white; }
+
+#container {
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  top: 0px; }
+
+a:link {
+  text-decoration: none;
+  cursor: auto; }
+
+a:visited {
+  text-decoration: none;
+  cursor: auto; }
+
+*:focus {
+  outline: none;
+}
+
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0; }
+
+.clearfix {
+  display: inline-block; }
+
+.clearfix {
+  height: 1%; }
+
+.clearfix {
+  display: block; }
+
+.align-center{
+  text-align:center;
+}
+
+/* Christams CSS */
+
+.christmasContainer{
+  vertical-align: middle;
+  width: 100%;
+  height: 100%;
+  background-color:#E8382D;
+  position: relative;
+}
+
+.christmasContainer .optInWrapper{
+  width: 100%;
+  position: absolute;
+  top:50%;
+  left:50%;
+  -webkit-transform:translate(-50%,-50%);
+}
+
+.termsAndConditions{
+  position: absolute;
+  bottom:20px;
+  font-size:14px; 
+  font-weight: 400;
+  color: rgba(255,255,255,0.80);
+  margin: 0px auto;
+  left: 0px;
+  right: 0px;
+}
+
+.secretSantaLogo{
+    background: url(images/secretsantalogo.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 280px;
+    height: 154px;
+    margin: 0px auto;
+}
+
+.christmasContainer p.ssintro{
+  color: rgba(255,255,255,0.80);
+  font-size: 15px;
+  margin:32px 43px 64px 43px;
+  font-weight: 400;
+  line-height:20px;
+}
+
+.secretSantaButton .santaSubscribe{
+    border: 1px solid rgba(255,255,255,1);
+    display: inline-block;
+    text-transform: uppercase;
+    color: white;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 12px 24px;
+    border-radius: 4px;
+    vertical-align: middle;
+}
+
+.spinner-ctr {
+  margin-top: -12.5px;
+  position: relative;
+  text-align: center;
+  top: 50%; }
+
+.spinner {
+  height: 25px;
+  width: 25px;
+  -webkit-animation: rotator 1.4s linear infinite;
+          animation: rotator 1.4s linear infinite;
+}
+
+@-webkit-keyframes rotator {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(270deg);
+            transform: rotate(270deg);
+  }
+}
+
+@keyframes rotator {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(270deg);
+            transform: rotate(270deg);
+  }
+}
+.path {
+  stroke-dasharray: 187;
+  stroke-dashoffset: 0;
+  -webkit-transform-origin: center;
+      -ms-transform-origin: center;
+          transform-origin: center;
+  -webkit-animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
+          animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
+}
+
+@-webkit-keyframes colors {
+  0% {
+    stroke: #4285F4;
+  }
+  25% {
+    stroke: #DE3E35;
+  }
+  50% {
+    stroke: #F7C223;
+  }
+  75% {
+    stroke: #1B9A59;
+  }
+  100% {
+    stroke: #4285F4;
+  }
+}
+
+@keyframes colors {
+  0% {
+    stroke: #4285F4;
+  }
+  25% {
+    stroke: #DE3E35;
+  }
+  50% {
+    stroke: #F7C223;
+  }
+  75% {
+    stroke: #1B9A59;
+  }
+  100% {
+    stroke: #4285F4;
+  }
+}
+@-webkit-keyframes dash {
+  0% {
+    stroke-dashoffset: 187;
+  }
+  50% {
+    stroke-dashoffset: 46.75;
+    -webkit-transform: rotate(135deg);
+            transform: rotate(135deg);
+  }
+  100% {
+    stroke-dashoffset: 187;
+    -webkit-transform: rotate(450deg);
+            transform: rotate(450deg);
+  }
+}
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 187;
+  }
+  50% {
+    stroke-dashoffset: 46.75;
+    -webkit-transform: rotate(135deg);
+            transform: rotate(135deg);
+  }
+  100% {
+    stroke-dashoffset: 187;
+    -webkit-transform: rotate(450deg);
+            transform: rotate(450deg);
+  }
+}
+
+#loader {
+  background-color:#fff;
+  display: none;
+  height: 100%;
+  overflow: hidden;
+  z-index: 100;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0; }
+
+#loader.loading {
+  display: block; 
+}
+
+#nointernet {
+  background-color: #fff;
+  opacity: 0.90;
+  width:100%;
+  height: 100%;
+  color: white;
+  font-weight: 300;
+  display: none;
+  left: 0;
+  right: 0;
+  position: fixed;
+  text-align: center;
+  z-index:101; }
+
+.no-internet-msg .bellIcon{
+  background: url(images/nointernet.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 72px;
+  height: 100px;  
+  margin: 0px auto;
+}  
+
+#nointernet.no-internet-msg{
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.noInternetWrapper h3{
+  color: #A00000;
+  font-size: 24px;
+  font-weight: 300;
+  margin-top: 20px;
+  margin-bottom: 12px;
+}
+
+.noInternetWrapper p{
+  color: #6D0000;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.noInternetWrapper, .blockScreenWrapper{
+  width: 90%;
+  position: absolute;
+  top:50%;
+  left:50%;
+  -webkit-transform:translate(-50%,-50%);
+}
+
+.blockScreenWrapper h3{
+  font-size: 24px;
+  font-weight: 300;
+  color: #fff;
+  margin-top: 25px;
+  margin-bottom: 9px;
+}
+
+.blockScreenWrapper p{
+  font-size:14px;
+  font-weight: 400;
+  color: #fff;
+  line-height:18px;
+  margin-bottom: 40px;
+}
+
+.blockScreenWrapper .unblockButton{
+  border-radius:4px;
+  border:1px solid #fff;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  padding:12px 55px;
+  display: inline-block;
+  text-align:center;
+}
+
+#blockScreen {
+  background-color: #1F2E79;
+  opacity: 0.90;
+  width:100%;
+  height: 100%;
+  color: white;
+  font-weight: 300;
+  display: none;
+  left: 0;
+  right: 0;
+  position: fixed;
+  text-align: center;
+  z-index:101; }
+
+.block-msg .blockIcon{
+  background: url(images/blocked.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 72px;
+  height: 100px;
+  margin: 0px auto; 
+}  
+
+#blockScreen.block-msg{
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.animation_fadein{
+    -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: fadein 1s; /* Firefox < 16 */
+        -ms-animation: fadein 1s; /* Internet Explorer */
+         -o-animation: fadein 1s; /* Opera < 12.1 */
+            animation: fadein 1s;
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Opera < 12.1 */
+@-o-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.animation_fadeout{
+    -webkit-animation: fadeout 1s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: fadeout 1s; /* Firefox < 16 */
+        -ms-animation: fadeout 1s; /* Internet Explorer */
+         -o-animation: fadeout 1s; /* Opera < 12.1 */
+            animation: fadeout 1s;
+}
+
+@keyframes fadeout {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadeout {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadeout {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadeout {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+}
+
+/* Opera < 12.1 */
+@-o-keyframes fadeout {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+}
+
+.hide { display: none !important; }
+
+
+.tapState{
+  color: #2FB2F4!important;
+  background-color:#fff!important;
+}  
+
+.tapStateRed{
+  color: #E8382D!important;
+  background-color:#fff!important;
+}  
+
+.tapStateOffer{
+  background:rgba(240,240,240,1)!important; 
+}
+
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+@media screen and (max-height: 510px) and (-webkit-max-device-pixel-ratio: 1.9) {
+  .secretSantaLogo{width: 240px;height: 132px;}
+  .christmasContainer p.ssintro{margin:28px 43px 54px 43px;font-size:14px;}
+  .secretSantaButton .santaSubscribe{font-size :12px;padding:10px 20px}
+}
+
+.ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

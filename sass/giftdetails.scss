@@ -1,0 +1,143 @@
+ // Gift Details CSS
+
+ .giftDetailsContainer{
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color:#2FB2F4;
+  position: relative;
+  z-index: -100;
+ }
+
+ .giftDetailsContainer .giftsEnabledBg{
+  background: url(images/mountainsnowupdated.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  padding-top:105%;
+  z-index: -10;  
+}
+
+ .giftDetailsWrapper{
+  padding: 96px 14px 50px 14px;
+ }
+
+ .giftDetailsWrapper .giftHeader .gdIcon{
+  background: url(images/santachat.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 65px;
+  height: 65px;
+ }
+
+ .giftConfirmSend{
+  position: absolute;
+  bottom: 0px;
+  background-color:#fff;
+  padding:18px 0px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #30a4f2;
+  width: 100%;
+  text-transform: uppercase;
+  z-index: 10;
+ }
+
+.giftDetailsWrapper .ssOffer{
+  margin: 0px auto 16px auto;
+  background: #fff;
+  border-radius: 4px;
+  width: 90%;
+  padding: 12px 0px;
+}
+
+.giftDetailsWrapper .ssOffer .offerIcon{
+  background: url(images/santachat.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 30px;
+  height: 30px;
+  margin-left: 10px;
+}
+
+.giftDetailsWrapper .ssOffer .offerContent{
+  padding-left :12px;
+  text-align:left;
+}
+
+.giftDetailsWrapper .ssOffer .offerContent p.ohead{
+  color: #3D475B;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  opacity: 0.80;
+}
+
+.giftDetailsWrapper .ssOffer .offerContent p.osubhead{
+  color: #3D475B;
+  font-size: 12px;
+  font-weight: 300;
+  margin-top: 7px; 
+  opacity: 0.80;
+}
+
+.giftDetailsWrapper .ssOffer .offerValue{
+  color: #3D475B;
+  font-size: 22px;
+  font-weight: 300;
+  line-height: 31px;
+}
+
+.giftDetailsWrapper .giftCodeValue{
+    border: 1px dashed #fff;
+    padding: 14px 0px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 4px;
+    width: 90%;
+    margin: 0px auto;
+}
+
+.giftDetailsWrapper .tcContainer{
+    border-radius: 4px;
+    padding:0px 12px;
+    margin-top: 16px;
+}
+
+.giftDetailsWrapper .tcContainer h3{
+  font-size: 14px;
+    color: #fff;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.70);
+}
+
+.giftTandC
+{
+  padding:0px 20px;
+}
+
+.overflowContainer{
+  height: 345px;
+  overflow: scroll;
+}
+
+.giftDetailsWrapper .tcContainer li{
+  font-size: 13px;
+  color: #fff;
+  line-height: 16px;
+  font-weight:400;
+  margin-bottom: 10px;
+  list-style-type: circle;
+}
+
+@media screen and (max-height: 510px) and (-webkit-max-device-pixel-ratio: 1.9) {
+  .giftDetailsWrapper{padding:80px 14px 50px 14px;}
+  .giftDetailsWrapper .tcContainer h3{font-size:11px;}
+  .overflowContainer{height:270px;}
+  .giftDetailsWrapper .tcContainer li{font-size:11px;margin-bottom:3px;}
+  .giftDetailsWrapper .giftCodeValue{font-size:14px;padding:12px 0px;}
+}

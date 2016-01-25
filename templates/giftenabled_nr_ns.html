@@ -1,0 +1,33 @@
+<div class="giftsEnabledWrapper">
+	
+	<!-- NR -->
+
+	<div class="giftRWrapper">
+		<div class="giftReceiverArea align-center">
+			<p>You are yet to receive any gift</p>
+			<div class="santaChatButton">
+				<div class="santaChatIcon"></div>
+				<div class="santaChatMessage buttonTap">Chat with your Santa</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- NS -->
+	<hr noshade>
+	
+	<div class="giftSWrapper">
+		<div class="giftSenderArea align-center">
+			<p class="gsHeading">Become a Santa, send a gift to your match</p>
+			
+			{{#secretsantaoffers}}
+				<div class="ssOffer section group buttonTapOffer" data-oid="{{offer_id}}">
+					<div class="col span_1_of_3 offerIcon"></div>
+					<div class="col span_2_of_3 offerContent"><p class="ohead">{{offerheading}}</p><p class="osubhead ellipsis">{{offertext}}</p></div>
+				</div>
+			{{/secretsantaoffers}}
+		
+		</div>
+	</div>
+
+</div>
+<div class="giftsEnabledBg"></div>
