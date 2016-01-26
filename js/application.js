@@ -220,16 +220,16 @@ this.router.route( '/matchscreen', function( data ) {
     utils.toggleBackNavigation( true );
 });
 
-// First Time User
+// First Time User Comes Here
 if ( platformSdk.appData.block === 'true' ) {
     console.log( 'User has blocked the Application' );
     events.publish( 'app/block', { show: true });
-} else if ( ! platformSdk.appData.helperData.FtueDone ) {
+} else if ( ! platformSdk.appData.helperData.subscribed ) {
     console.log( 'First Time User' );
     self.router.navigateTo( '/' );
 } else {
     console.log( 'Regular User' );
-    self.router.navigateTo( '/quote', {});
+    self.router.navigateTo( '/matchscreen', {});
 }
 }
 };

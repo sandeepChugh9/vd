@@ -19,18 +19,32 @@
             events.publish('update.loader', {show: true});
 
             // Update The Helper Data
-            platformSdk.appData.helperData.FtueDone = true;
-            platformSdk.updateHelperData(platformSdk.appData.helperData);
-
+            
             if (platformSdk.bridgeEnabled) {
-                App.SantaService.getHomeScreen(function (res) {
-                    console.log("This is the optin screen buddy");
-                    console.log(res);
-                     App.router.navigateTo('/profile',{});
-                });
+                 // App.ValentineServices.subscribeToValentine(function (res) {
+                 //    console.log(res);
+                 //    if(res.stat == 'success'){
+                 //        console.log("Success occured for subscribed");
+                 //        platformSdk.appData.helperData.FtueDone = true;
+                 //        platformSdk.updateHelperData(platformSdk.appData.helperData);
+                 //        App.router.navigateTo('/profile',{});         
+                 //    }
+                //      else if(res.stat == "fail"){
+        //                 events.publish('update.loader', {show: false});
+        //                 platformSdk.ui.showToast("Something Went Wrong. Please try after some time");
+        //             }
+        //             else {
+        //                 events.publish('update.loader', {show: false});
+        //                 platformSdk.ui.showToast("Something Went Wrong. Please try after some time");
+        //             }
+                    
+                 // });
+                App.router.navigateTo('/profile',{});
             }
             else {
                  App.router.navigateTo('/profile',{});
+                 platformSdk.appData.helperData.FtueDone = true;
+                platformSdk.updateHelperData(platformSdk.appData.helperData);
             }
         });
 

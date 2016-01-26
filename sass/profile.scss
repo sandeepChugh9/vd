@@ -1,0 +1,155 @@
+.profile_pic{
+    margin-top: 32px;
+    background: url(images/profile.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 104px;
+    height: 104px;
+    margin: 0px auto;
+    border-radius: 50%;
+    background-position:center;
+}
+
+.ProfileWrapper{
+  margin-top: 36px;
+}
+
+* { box-sizing:border-box; }
+
+/* basic stylings ------------------------------------------ */
+
+.details_container{ 
+  margin:30px auto 0; 
+  display:block; 
+  background:#FFF;
+  padding:10px 50px 50px;
+}
+
+/* form starting stylings ------------------------------- */
+.group        { 
+  position:relative; 
+  margin-bottom:45px; 
+}
+input         {
+  font-size:15px;
+  padding:10px 10px 10px 5px;
+  display:block;
+  width:100%;
+  border:none;
+  border-bottom:1px solid #d6d6d6;
+  color:#666666;
+}
+input:focus     { outline:none; }
+
+/* LABEL ======================================= */
+label          {
+  color:#999; 
+  font-size:15px;
+  font-weight:normal;
+  position:absolute;
+  pointer-events:none;
+  left:5px;
+  top:10px;
+  transition:0.2s ease all; 
+  -moz-transition:0.2s ease all; 
+  -webkit-transition:0.2s ease all;
+}
+
+/* active state */
+input:focus ~ label, input:valid ~ label    {
+  top:-20px;
+  font-size:13px;
+  color:#CCCCCC;
+}
+
+/* BOTTOM BARS ================================= */
+.bar  { position:relative; display:block; width:300px; }
+.bar:before, .bar:after   {
+  content:'';
+  height:2px; 
+  width:0;
+  bottom:1px; 
+  position:absolute;
+  background:#FA5643; 
+  transition:0.2s ease all; 
+  -moz-transition:0.2s ease all; 
+  -webkit-transition:0.2s ease all;
+}
+.bar:before {
+  left:50%;
+}
+.bar:after {
+  right:50%; 
+}
+
+/* active state */
+input:focus ~ .bar:before, input:focus ~ .bar:after {
+  width:50%;
+}
+
+/* HIGHLIGHTER ================================== */
+.highlight {
+  position:absolute;
+  height:60%; 
+  width:100px; 
+  top:25%; 
+  left:0;
+  pointer-events:none;
+  opacity:0.5;
+}
+
+/* active state */
+input:focus ~ .highlight {
+  -webkit-animation:inputHighlighter 0.3s ease;
+  -moz-animation:inputHighlighter 0.3s ease;
+  animation:inputHighlighter 0.3s ease;
+}
+
+/* ANIMATIONS ================ */
+@-webkit-keyframes inputHighlighter {
+  from { background:#FA5643; }
+  to  { width:0; background:transparent; }
+}
+@-moz-keyframes inputHighlighter {
+  from { background:#FA5643; }
+  to  { width:0; background:transparent; }
+}
+@keyframes inputHighlighter {
+  from { background:#FA5643; }
+  to  { width:0; background:transparent; }
+}
+
+.lookingfor{
+font-size: 13px;
+color: #999999;
+letter-spacing: 0.43px;
+line-height: 21px;
+}
+
+.profile_pic_select{
+    display: inline-block;
+    margin-top: 32px;
+    background-size: contain !important;
+    background-repeat: no-repeat;
+    width: 72px;
+    height: 72px;
+    margin: 24px 12px;
+    border-radius: 50%;
+    background-position:center;
+}
+
+.profile_pic_select.boy{
+   background: url(images/boy.png);
+}
+
+.profile_pic_select.girl{
+ background: url(images/girl.png);
+}
+
+.profile_pic_select.girl.selected{
+  border:2px solid #C13D3D;
+}
+
+.profile_pic_select.boy.selected{
+  border:2px solid #FFE35D;
+}
