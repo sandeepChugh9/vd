@@ -4493,254 +4493,244 @@
 	    'use strict';
 
 	    var WorkspaceController = __webpack_require__(8),
-	        QuoteController = __webpack_require__(10),
-	        ProfileController = __webpack_require__(12),
-	        MatchScreenController = __webpack_require__(14),
-	        HomeScreenController = __webpack_require__(16),
+	    ProfileController = __webpack_require__(10),
+	    MatchScreenController = __webpack_require__(12),
+	    HomeScreenController = __webpack_require__(14),
 
-	        Router = __webpack_require__(18),
-	        utils = __webpack_require__(4),
+	    Router = __webpack_require__(16),
+	    utils = __webpack_require__(4),
 
-	        TxService = __webpack_require__(19),
-	        SantaServices = __webpack_require__(20);
+	    TxService = __webpack_require__(17),
+	    SantaServices = __webpack_require__(18);
 
-	    // Full Screen Loader 
-	    var loader = document.getElementById('loader');
-	    var loadObject = events.subscribe('update.loader', function (params) {
-	        loader.toggleClass('loading', params.show);
+	// Full Screen Loader 
+	var loader = document.getElementById('loader');
+	var loadObject = events.subscribe('update.loader', function (params) {
+	    loader.toggleClass('loading', params.show);
+	});
+
+	// Tap State Events :: Touch Start And Touch End
+
+	document.addEventListener('touchstart', function (e) {
+	    e = e || window.event;
+	    var target = e.target;
+	    if (target.classList.contains('buttonTap')) {
+	        target.classList.add('tapState');
+	    }
+	    else if (target.classList.contains('buttonTapRed')) {
+	        target.classList.add('tapStateRed');
+	    }
+	    else if (target.classList.contains('buttonTapOffer')) {
+	        target.classList.add('tapStateOffer');
+	    }
+	    else {
+	        return;
+	    }
+	}, false);
+
+	document.addEventListener('touchend', function (e) {
+	    e = e || window.event;
+	    var target = e.target;
+	    if (target.classList.contains('buttonTap')) {
+	        target.classList.remove('tapState');
+	    }
+	    else if (target.classList.contains('buttonTapRed')) {
+	        target.classList.remove('tapStateRed');
+	    }
+	    else if (target.classList.contains('buttonTapOffer')) {
+	        target.classList.remove('tapStateOffer');
+	    }
+	    else {
+	        return;
+	    }
+	}, false);
+
+	document.querySelector('.unblockButton').addEventListener('click', function () {
+	    unBlockApp();
+	}, false);
+
+	// No Internet Connection Tab 
+	var noInternet = document.getElementById('nointernet');
+	var noInternetObject = events.subscribe('app/offline', function (params) {
+	    noInternet.toggleClass('no-internet-msg', params.show);
+	});
+
+	// Block Connection Tab 
+	var isBlock = document.getElementById('blockScreen');
+	var isBlockObject = events.subscribe('app/block', function (params) {
+	    isBlock.toggleClass('block-msg', params.show);
+	});
+
+	var unBlockApp = function () {
+	    var self = this;
+	    var id = '' + platformSdk.retrieveId('app.menu.om.block');
+
+	    platformSdk.appData.block = "false";
+	    if (platformSdk.bridgeEnabled) platformSdk.unblockChatThread();
+	    platformSdk.events.publish('app.state.block.hide');
+	    platformSdk.updateOverflowMenu(id, {
+	        "title": "Block"
 	    });
 
-	    // Tap State Events :: Touch Start And Touch End
+	    utils.toggleBackNavigation(false);        
+	    events.publish('update.loader', {show: false});
+	    events.publish('app/block', {show: false});
+	};
 
-	    document.addEventListener('touchstart', function (e) {
-	        e = e || window.event;
-	        var target = e.target;
-	        if (target.classList.contains('buttonTap')) {
-	            target.classList.add('tapState');
-	        }
-	        else if (target.classList.contains('buttonTapRed')) {
-	            target.classList.add('tapStateRed');
-	        }
-	        else if (target.classList.contains('buttonTapOffer')) {
-	            target.classList.add('tapStateOffer');
-	        }
-	        else {
-	            return;
-	        }
-	    }, false);
+	var Application = function (options) {
+	    this.container = options.container;
+	    this.routeIntent = options.route;
 
-	    document.addEventListener('touchend', function (e) {
-	        e = e || window.event;
-	        var target = e.target;
-	        if (target.classList.contains('buttonTap')) {
-	            target.classList.remove('tapState');
-	        }
-	        else if (target.classList.contains('buttonTapRed')) {
-	            target.classList.remove('tapStateRed');
-	        }
-	        else if (target.classList.contains('buttonTapOffer')) {
-	            target.classList.remove('tapStateOffer');
-	        }
-	        else {
-	            return;
-	        }
-	    }, false);
+	    this.router = new Router();
 
-	    document.querySelector('.unblockButton').addEventListener('click', function () {
-	        unBlockApp();
-	    }, false);
+	    this.workspaceController = new WorkspaceController();
+	    this.ProfileController = new ProfileController();
+	    this.HomeController = new HomeScreenController();
+	    this.MatchScreenController = new MatchScreenController();
 
-	    // No Internet Connection Tab 
-	    var noInternet = document.getElementById('nointernet');
-	    var noInternetObject = events.subscribe('app/offline', function (params) {
-	        noInternet.toggleClass('no-internet-msg', params.show);
-	    });
+	    this.TxService = new TxService();
+	this.SantaService = new SantaServices(this.TxService); //communication layer
+	};
 
-	    // Block Connection Tab 
-	    var isBlock = document.getElementById('blockScreen');
-	    var isBlockObject = events.subscribe('app/block', function (params) {
-	        isBlock.toggleClass('block-msg', params.show);
-	    });
+	Application.prototype = {
 
-	    var unBlockApp = function () {
-	        var self = this;
-	        var id = '' + platformSdk.retrieveId('app.menu.om.block');
+	// Setting Up The Three Dot Menu
+	initOverflowMenu: function () {
+	    var omList = [{
+	        "title": platformSdk.appData.block === "true" ? "Unblock" : "Block",
+	        "en": "true",
+	        "eventName": "app.menu.om.block"
+	    },
+	    {
+	        "title": "Notifications",
+	        "en": "true",
+	        "eventName": "app.menu.om.mute",
+	        "is_checked": platformSdk.appData.mute === "true" ? "false" : "true"
+	    }];
 
-	        platformSdk.appData.block = "false";
-	        if (platformSdk.bridgeEnabled) platformSdk.unblockChatThread();
-	        platformSdk.events.publish('app.state.block.hide');
+	// Notifications
+	platformSdk.events.subscribe('app.menu.om.mute', function (id) {
+	    id = "" + platformSdk.retrieveId('app.menu.om.mute');
+	    if (platformSdk.appData.mute == "true") {
+	        platformSdk.appData.mute = "false";
+	        platformSdk.muteChatThread();
 	        platformSdk.updateOverflowMenu(id, {
-	            "title": "Block"
+	            "is_checked": "true"
 	        });
+	    } else {
+	        platformSdk.appData.mute = "true";
+	        platformSdk.muteChatThread();
+	        platformSdk.updateOverflowMenu(id, {
+	            "is_checked": "false"
+	        });
+	    }
+	});
+	// Block
+	platformSdk.events.subscribe('app.menu.om.block', function (id) {
+	    id = "" + platformSdk.retrieveId('app.menu.om.block');
+	    if (platformSdk.appData.block === "true") {
+	        unBlockApp();
+	    } else {
+	        platformSdk.appData.block = "true";
+	        platformSdk.blockChatThread();
+	        platformSdk.events.publish('app.state.block.show');
+	        platformSdk.updateOverflowMenu(id, {
+	            "title": "Unblock"
+	        });
+	        utils.toggleBackNavigation(false);
+	        events.publish('app/block', {show: true});
+	        events.publish('app/offline', {show: false});
+	    }
+	});
 
-	        utils.toggleBackNavigation(false);        
-	        events.publish('update.loader', {show: false});
-	        events.publish('app/block', {show: false});
-	    };
+	platformSdk.setOverflowMenu(omList);
+	},
 
-	    var Application = function (options) {
-	        this.container = options.container;
-	        this.routeIntent = options.route;
+	backPressTrigger: function () {
+	    this.router.back();
+	},
 
-	        this.router = new Router();
+	getRoute: function () {
+	    var that = this;
 
-	        this.workspaceController = new WorkspaceController();
-	        this.QuoteController = new QuoteController();
-	        this.ProfileController = new ProfileController();
-	        this.HomeController = new HomeScreenController();
-	        this.MatchScreenController = new MatchScreenController();
+	// ToDo: Remvove tihs if block from here?
+	if (this.routeIntent !== undefined) {
 
-	        this.TxService = new TxService();
-	        this.SantaService = new SantaServices(this.TxService); //communication layer
-	    };
-
-	    Application.prototype = {
-
-	        // Setting Up The Three Dot Menu
-	        initOverflowMenu: function () {
-	            var omList = [{
-	                "title": platformSdk.appData.block === "true" ? "Unblock" : "Block",
-	                "en": "true",
-	                "eventName": "app.menu.om.block"
-	            },
-	                {
-	                    "title": "Notifications",
-	                    "en": "true",
-	                    "eventName": "app.menu.om.mute",
-	                    "is_checked": platformSdk.appData.mute === "true" ? "false" : "true"
-	                }];
-
-	            // Notifications
-	            platformSdk.events.subscribe('app.menu.om.mute', function (id) {
-	                id = "" + platformSdk.retrieveId('app.menu.om.mute');
-	                if (platformSdk.appData.mute == "true") {
-	                    platformSdk.appData.mute = "false";
-	                    platformSdk.muteChatThread();
-	                    platformSdk.updateOverflowMenu(id, {
-	                        "is_checked": "true"
-	                    });
-	                } else {
-	                    platformSdk.appData.mute = "true";
-	                    platformSdk.muteChatThread();
-	                    platformSdk.updateOverflowMenu(id, {
-	                        "is_checked": "false"
-	                    });
+	} else {
+	    events.publish('app.store.get', {
+	        key: '_routerCache',
+	        ctx: this,
+	        cb: function (r) {
+	            if (r.status === 1 && platformSdk.bridgeEnabled) {
+	                try {
+	                    that.router.navigateTo(r.results.route, r.results.cache);
+	                } catch (e) {
+	                    that.router.navigateTo('/');
 	                }
-	            });
-	            // Block
-	            platformSdk.events.subscribe('app.menu.om.block', function (id) {
-	                id = "" + platformSdk.retrieveId('app.menu.om.block');
-	                if (platformSdk.appData.block === "true") {
-	                    unBlockApp();
-	                } else {
-	                    platformSdk.appData.block = "true";
-	                    platformSdk.blockChatThread();
-	                    platformSdk.events.publish('app.state.block.show');
-	                    platformSdk.updateOverflowMenu(id, {
-	                        "title": "Unblock"
-	                    });
-	                    utils.toggleBackNavigation(false);
-	                    events.publish('app/block', {show: true});
-	                    events.publish('app/offline', {show: false});
-	                }
-	            });
-
-	            platformSdk.setOverflowMenu(omList);
-	        },
-
-	        backPressTrigger: function () {
-	            this.router.back();
-	        },
-
-	        getRoute: function () {
-	            var that = this;
-
-	            // ToDo: Remvove tihs if block from here?
-	            if (this.routeIntent !== undefined) {
-
 	            } else {
-	                events.publish('app.store.get', {
-	                    key: '_routerCache',
-	                    ctx: this,
-	                    cb: function (r) {
-	                        if (r.status === 1 && platformSdk.bridgeEnabled) {
-	                            try {
-	                                that.router.navigateTo(r.results.route, r.results.cache);
-	                            } catch (e) {
-	                                that.router.navigateTo('/');
-	                            }
-	                        } else {
-	                            that.router.navigateTo('/');
-	                        }
-	                    }
-	                });
-	            }
-	        },
-
-	        start: function () {
-
-	            var self = this;
-	            self.$el = $(this.container);
-	            self.initOverflowMenu();
-
-	            utils.toggleBackNavigation(false);
-
-	            platformSdk.events.subscribe('onBackPressed', function () {
-	                self.backPressTrigger();
-	            });
-
-	            platformSdk.events.subscribe('onUpPressed', function () {
-	                self.backPressTrigger();
-	            });
-
-	            // Subscribe :: Workspace
-	            this.router.route('/', function (data) {
-	                self.container.innerHTML = "";
-	                self.workspaceController.render(self.container, self, data);
-	                utils.toggleBackNavigation(false);
-	            });
-
-	            // ToDo: As discussed, the home route should be registered for the optin screen which should route to Santa Secret panel when required.
-	            // Santa Secret Panel Is Home
-	            this.router.route('/quote', function (data) {
-	                self.container.innerHTML = "";
-	                self.QuoteController.render(self.container, self, data);
-	                utils.toggleBackNavigation(true);
-	            });
-
-	            this.router.route('/homescreen', function (data) {
-	                self.container.innerHTML = "";
-	                self.HomeController.render(self.container, self, data);
-	                utils.toggleBackNavigation(true);
-	            });
-
-	            this.router.route('/profile', function (data) {
-	                self.container.innerHTML = "";
-	                self.ProfileController.render(self.container, self, data);
-	                utils.toggleBackNavigation(true);
-	            });
-
-	            this.router.route('/matchscreen', function (data) {
-	                self.container.innerHTML = "";
-	                self.MatchScreenController.render(self.container, self, data);
-	                utils.toggleBackNavigation(true);
-	            });
-
-	            // First Time User
-	            if (platformSdk.appData.block === "true") {
-	                console.log("User has blocked the Application");
-	                events.publish('app/block', {show: true});  
-	            } else if (!platformSdk.appData.helperData.FtueDone) {
-	                console.log("First Time User");
-	                self.router.navigateTo('/');
-	            } else {
-	                console.log("Regular User");
-	                self.router.navigateTo('/quote', {});
+	                that.router.navigateTo('/');
 	            }
 	        }
-	    };
+	    });
+	}
+	},
 
-	    module.exports = Application;
+	start: function () {
+
+	    var self = this;
+	    self.$el = $(this.container);
+	    self.initOverflowMenu();
+
+	    utils.toggleBackNavigation(false);
+
+	    platformSdk.events.subscribe('onBackPressed', function () {
+	        self.backPressTrigger();
+	    });
+
+	    platformSdk.events.subscribe('onUpPressed', function () {
+	        self.backPressTrigger();
+	    });
+
+	// Subscribe :: Workspace
+	this.router.route('/', function (data) {
+	    self.container.innerHTML = "";
+	    self.workspaceController.render(self.container, self, data);
+	    utils.toggleBackNavigation(false);
+	});
+
+	this.router.route('/homescreen', function (data) {
+	    self.container.innerHTML = "";
+	    self.HomeController.render(self.container, self, data);
+	    utils.toggleBackNavigation(true);
+	});
+
+	this.router.route('/profile', function (data) {
+	    self.container.innerHTML = "";
+	    self.ProfileController.render(self.container, self, data);
+	    utils.toggleBackNavigation(true);
+	});
+
+	this.router.route('/matchscreen', function (data) {
+	    self.container.innerHTML = "";
+	    self.MatchScreenController.render(self.container, self, data);
+	    utils.toggleBackNavigation(true);
+	});
+
+	// First Time User
+	if (platformSdk.appData.block === "true") {
+	    console.log("User has blocked the Application");
+	    events.publish('app/block', {show: true});  
+	} else if (!platformSdk.appData.helperData.FtueDone) {
+	    console.log("First Time User");
+	    self.router.navigateTo('/');
+	} else {
+	    console.log("Regular User");
+	    self.router.navigateTo('/quote', {});
+	}
+	}
+	};
+
+	module.exports = Application;
 
 	})(window, platformSdk.events);
 
@@ -4774,16 +4764,12 @@
 	                App.SantaService.getHomeScreen(function (res) {
 	                    console.log("This is the optin screen buddy");
 	                    console.log(res);
-	                     App.router.navigateTo('/homescreen',{})
+	                     App.router.navigateTo('/profile',{})
 	                });
 	            }
 
 	            else {
-	                App.SantaService.getHomeScreen(function (res) {
-	                    console.log(res.content);
-	                    console.log(res.author.name)
-	                     App.router.navigateTo('/homescreen',{})
-	                });
+	                 App.router.navigateTo('/profile',{})
 	            }
 	        });
 
@@ -4851,7 +4837,7 @@
 /* 9 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"optInWrapper\">\n\t<div class=\"secretSantaLogo\">\n\t</div>\n\t<p class=\"ssintro align-center\">Read Startup quotes and get inspired</p>\n\t<div class=\"secretSantaButton align-center\">\n\t\t<div class=\"santaSubscribe align-center buttonTapRed\">Show Off</div>\n\t</div>\n</div>\n"
+	module.exports = "<div class=\"optInWrapper\">\n\t<div class=\"secretSantaLogo\">\n\t</div>\n\t<p class=\"ssintro align-center\">Spend this Valentine’s week on hike with your special someone.</p>\n\t<div class=\"secretSantaButton align-center\">\n\t\t<div class=\"santaSubscribe align-center buttonTapRed\">Find a Valentine</div>\n\t\t<div class=\"not-interested align-center\">No, I am not interested</div>\n\t</div>\n</div>\n"
 
 /***/ },
 /* 10 */
@@ -4860,119 +4846,9 @@
 	(function (W, events, utils) {
 	    'use strict';
 
-	    var QuoteController = function (options) {
-
-	        this.template = __webpack_require__(11);
-	        this.gradients = [{"name":"Moss","colors":["#134E5E ","#71B280 "]},{"name":"Portrait","colors":["#8e9eab ","#eef2f3 "]},{"name":"Turquoise flow","colors":["#136a8a ","#267871 "]},{"name":"Instagram","colors":["#517fa4 ","#243949 "]},{"name":"Twitch","colors":["#6441A5 ","#2a0845 "]},{"name":"ServQuick","colors":["#485563 ","#29323c "]},{"name":"SoundCloud","colors":["#fe8c00 ","#f83600 "]},{"name":"Facebook Messenger","colors":["#00c6ff ","#0072ff "]},{"name":"Amethyst","colors":["#9D50BB ","#6E48AA "]},{"name":"Dirty Fog","colors":["#B993D6 ","#8CA6DB "]},{"name":"Reef","colors":["#00d2ff ","#3a7bd5 "]},{"name":"A Lost Memory","colors":["#DE6262 ","#FFB88C "]},{"name":"Namn","colors":["#a73737 ","#7a2828 "]},{"name":"Day Tripper","colors":["#f857a6 ","#ff5858 "]},{"name":"Midnight City","colors":["#232526 ","#414345 "]},{"name":"Sea Weed","colors":["#4CB8C4 ","#3CD3AD "]},];
-	    };
-
-	    QuoteController.prototype.destroy = function () {
-
-	    };
-
-	    QuoteController.prototype.bind = function (App, res) {
-	        console.log(this.gradients);
-	        var that = this;
-	        var color1,color2 = {};
-	        var mycolor = new Array;
-	        mycolor = this.gradients[Math.floor(Math.random()*this.gradients.length)].colors;
-	        color1= mycolor[0];
-	        color2= mycolor[1];
-
-	        var currentY,lastY;
-
-	        $(document).bind('touchstart', function (e){
-	            console.log("Touch start");
-	            currentY = e.changedTouches[0].screenY;
-	        });
-
-	        $(document).bind('touchend', function (e){
-	            console.log("Touch End");
-	            
-	            console.log(currentY);
-	            lastY = e.changedTouches[0].screenY;
-	            
-	            if((currentY - lastY) > 50 || (currentY - lastY) < -50){
-	                console.log("Scrolled Up by more than 50");
-	                if (platformSdk.bridgeEnabled) {
-	                        App.SantaService.getQuote(function (res) {
-	                            console.log("here is your quote and author");
-	                            console.log(res);
-	                             App.router.navigateTo('/quote',{})
-	                        });
-	                    }
-	                    else {
-	                        App.SantaService.getQuote(function (res) {
-	                            console.log(res.content);
-	                            console.log(res.author.name)
-	                             App.router.navigateTo('/quote',{quote:res.content, author:res.author.name})
-	                        });
-	                }
-	            }
-
-	        });
-
-	        var newquote = this.el.getElementsByClassName('newquote');
-	        console.log(this.el);
-	        var quoteContainer = document.getElementsByClassName('quoteContainer')[0];
-	       // console.log("hahaga"+quoteContainer);
-	        quoteContainer.style.background = "linear-gradient(to bottom right,"+color1+","+color2+")";
-	        //quoteContainer.style.background = "#fff";
-
-	        for(var i=0;i<newquote.length;i++) {
-	                newquote[i].addEventListener('click', function(ev) {   
-	                    if (platformSdk.bridgeEnabled) {
-	                        App.SantaService.getQuote(function (res) {
-	                            console.log("here is your quote and author");
-	                            console.log(res);
-	                             App.router.navigateTo('/quote',{})
-	                        });
-	                    }
-
-	                    else {
-	                        App.SantaService.getQuote(function (res) {
-	                            console.log(res.content);
-	                            console.log(res.author.name)
-	                             App.router.navigateTo('/quote',{quote:res.content, author:res.author.name})
-	                        });
-	                    }
-	                
-	                });
-	    }
-	    };
-
-	    QuoteController.prototype.render = function (ctr, App, data) {
-
-
-	        this.el = document.createElement('div');
-	        this.el.className = "quoteContainer animation_fadein noselect";
-	        this.el.innerHTML = Mustache.render(this.template, {quote:data.quote, author:data.author});
-	        ctr.appendChild(this.el);
-	        events.publish('update.loader', {show: false});
-	        this.bind(App, data);
-	    };
-
-	    module.exports = QuoteController;
-
-
-	})(window, platformSdk.events, platformSdk.utils);
-
-/***/ },
-/* 11 */
-/***/ function(module, exports) {
-
-	module.exports = "<div class=\"quoteWrapperContainer\">\n<div class=\"quoteWrapper\">\n\t<p class=\"quote\">{{quote}}</p>\n\t<p class=\"author\">{{author}}</p>\n</div>\n</div>\n"
-
-/***/ },
-/* 12 */
-/***/ function(module, exports, __webpack_require__) {
-
-	(function (W, events, utils) {
-	    'use strict';
-
 	    var ProfileController = function (options) {
 
-	        this.template = __webpack_require__(13);
+	        this.template = __webpack_require__(11);
 	    };
 
 	    ProfileController.prototype.destroy = function () {
@@ -5026,13 +4902,13 @@
 	})(window, platformSdk.events, platformSdk.utils);
 
 /***/ },
-/* 13 */
+/* 11 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"quoteWrapperContainer\">\n<div class=\"quoteWrapper\">\n\t<p class=\"quote\">Welcome to profile screen</p>\n\t<p class=\"author\">Yo Profile Screen</p>\n\t\n</div>\n</div>\n"
+	module.exports = "<div class=\"ProfileContainer\">\n\t<div class=\"ProfileWrapper\">\n\t\t<div class=\"profile_pic\"></div>\n\t\t<div class=\"details_container\">\n\n\t\t\t<form>\n\n\t\t\t\t<div class=\"group\">      \n\t\t\t\t\t<input type=\"text\" required>\n\t\t\t\t\t<span class=\"highlight\"></span>\n\t\t\t\t\t<span class=\"bar\"></span>\n\t\t\t\t\t<label>Name</label>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"group\">      \n\t\t\t\t\t<input type=\"text\" required>\n\t\t\t\t\t<span class=\"highlight\"></span>\n\t\t\t\t\t<span class=\"bar\"></span>\n\t\t\t\t\t<label>Status</label>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"group\">      \n\t\t\t\t\t<input type=\"text\" required>\n\t\t\t\t\t<span class=\"highlight\"></span>\n\t\t\t\t\t<span class=\"bar\"></span>\n\t\t\t\t\t<label>Gender</label>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"group\">      \n\t\t\t\t\t<input type=\"text\" required>\n\t\t\t\t\t<span class=\"highlight\"></span>\n\t\t\t\t\t<span class=\"bar\"></span>\n\t\t\t\t\t<label>Age</label>\n\t\t\t\t</div>\n\t\t\t</form>\n\t\t\t<div class=\"align-center lookingfor\">I AM LOOKING FOR</div>\n\n\t\t</div>\n\t</div>\n</div>\n"
 
 /***/ },
-/* 14 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function (W, events, utils) {
@@ -5040,7 +4916,7 @@
 
 	    var MatchScreenController = function (options) {
 
-	        this.template = __webpack_require__(15);
+	        this.template = __webpack_require__(13);
 	    };
 
 	    MatchScreenController.prototype.destroy = function () {
@@ -5085,13 +4961,13 @@
 	})(window, platformSdk.events, platformSdk.utils);
 
 /***/ },
-/* 15 */
+/* 13 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"quoteWrapperContainer\">\n<div class=\"quoteWrapper\">\n\t<p class=\"quote\">Welcome to matchscreen</p>\n\t<p class=\"author\">Yo matchscreen</p>\n</div>\n</div>\n"
 
 /***/ },
-/* 16 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function (W, events, utils) {
@@ -5099,7 +4975,7 @@
 
 	    var HomeScreenController = function (options) {
 
-	        this.template = __webpack_require__(17);
+	        this.template = __webpack_require__(15);
 	    };
 
 	    HomeScreenController.prototype.destroy = function () {
@@ -5155,13 +5031,13 @@
 	})(window, platformSdk.events, platformSdk.utils);
 
 /***/ },
-/* 17 */
+/* 15 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"quoteWrapperContainer\">\n<div class=\"quoteWrapper\">\n\t<p class=\"quote\">Welcome to homescreen</p>\n\t<p class=\"author\">Yo homescreen</p>\n\t<button class=\"continue\">Take me 2 other screen</button>\n</div>\n</div>\n"
 
 /***/ },
-/* 18 */
+/* 16 */
 /***/ function(module, exports) {
 
 	(function (W, events) {
@@ -5238,7 +5114,7 @@
 	})(window, platformSdk.events);
 
 /***/ },
-/* 19 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function (W, platformSdk, events) {
@@ -5378,7 +5254,7 @@
 	})(window, platformSdk, platformSdk.events);
 
 /***/ },
-/* 20 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function (W, platformSdk) {
@@ -5416,89 +5292,89 @@
 	            if (typeof fn === "function") return this.SantaService.communicate(params, fn, x);
 	            else this.SantaService.communicate(params);
 	        },
-	        // Subscribe URL
-	        getMatchScreen: function(fn, x){
-	            var params = {
-	                'url': URL.location, 
-	                'type': 'GET', 
-	            };
-
-	            if (typeof fn === "function") return this.SantaService.communicate(params, fn, x);
-	            else this.SantaService.communicate(params);
-	        },
-
-
-	        subscribeToSecretSanta: function(fn, x){
-	            var params = {
-	                'url': URL.location+'/subscribe', 
-	                'type': 'POST'
-	            };
-	            if (typeof fn === "function") return this.SantaService.communicate(params, fn, x);
-	            else this.SantaService.communicate(params);
-	        },
-
-	        // Get Reward Status and Rewards
-
-	        getRewards: function(fn, x){
-	            var params = {
-	                'url': URL.location +  '/rewards', 
-	                'type': 'GET', 
-	            };
-
-	            if (typeof fn === "function") return this.SantaService.communicate(params, fn, x);
-	            else this.SantaService.communicate(params);
-	        },
-
-	        // Assignment Status
-
-	        getAssignmentStatus: function(fn, x){
-	            var params = {
-	                'url': URL.location+'/assignment_status', 
-	                'type': 'GET', 
-	            };
-
-	            if (typeof fn === "function") return this.SantaService.communicate(params, fn, x);
-	            else this.SantaService.communicate(params);
-	        },
-
-	        // Confirm The Send Of The Gift
-
-	        sendGift: function(data, fn, x){
-	            var params = {
-	                'url': URL.location +  '/rewards', 
-	                'type': 'POST', 
-	                'data': data,
-	            };
-
-	            if (typeof fn === "function") return this.SantaService.communicate(params, fn, x);
-	            else this.SantaService.communicate(params);
-	        },
-
-	        invokeChat: function(data, fn, x){
-	            var params = {
-	                'url': URL.location +  '/invoke_chat', 
-	                'type': 'POST', 
-	                'data': data,
-	            };
-
-	            if (typeof fn === "function") return this.SantaService.communicate(params, fn, x);
-	            else this.SantaService.communicate(params);
-	        },
-
-	        // Reveal The Gift That Was Received By The User
-
-	        revealGift: function(fn, x){
-	            var params = {
-	                'url': URL.location +  '/show_rewards',
-	                'type': 'GET',
-	            };
-
-	            if (typeof fn === "function") return this.SantaService.communicate(params, fn, x);
-	            else this.SantaService.communicate(params);
-	        },
+	// Subscribe URL
+	getMatchScreen: function(fn, x){
+	    var params = {
+	        'url': URL.location, 
+	        'type': 'GET', 
 	    };
 
-	    module.exports = SantaService;
+	    if (typeof fn === "function") return this.SantaService.communicate(params, fn, x);
+	    else this.SantaService.communicate(params);
+	},
+
+
+	subscribeToSecretSanta: function(fn, x){
+	    var params = {
+	        'url': URL.location+'/subscribe', 
+	        'type': 'POST'
+	    };
+	    if (typeof fn === "function") return this.SantaService.communicate(params, fn, x);
+	    else this.SantaService.communicate(params);
+	},
+
+	// Get Reward Status and Rewards
+
+	getRewards: function(fn, x){
+	    var params = {
+	        'url': URL.location +  '/rewards', 
+	        'type': 'GET', 
+	    };
+
+	    if (typeof fn === "function") return this.SantaService.communicate(params, fn, x);
+	    else this.SantaService.communicate(params);
+	},
+
+	// Assignment Status
+
+	getAssignmentStatus: function(fn, x){
+	    var params = {
+	        'url': URL.location+'/assignment_status', 
+	        'type': 'GET', 
+	    };
+
+	    if (typeof fn === "function") return this.SantaService.communicate(params, fn, x);
+	    else this.SantaService.communicate(params);
+	},
+
+	// Confirm The Send Of The Gift
+
+	sendGift: function(data, fn, x){
+	    var params = {
+	        'url': URL.location +  '/rewards', 
+	        'type': 'POST', 
+	        'data': data,
+	    };
+
+	    if (typeof fn === "function") return this.SantaService.communicate(params, fn, x);
+	    else this.SantaService.communicate(params);
+	},
+
+	invokeChat: function(data, fn, x){
+	    var params = {
+	        'url': URL.location +  '/invoke_chat', 
+	        'type': 'POST', 
+	        'data': data,
+	    };
+
+	    if (typeof fn === "function") return this.SantaService.communicate(params, fn, x);
+	    else this.SantaService.communicate(params);
+	},
+
+	// Reveal The Gift That Was Received By The User
+
+	revealGift: function(fn, x){
+	    var params = {
+	        'url': URL.location +  '/show_rewards',
+	        'type': 'GET',
+	    };
+
+	    if (typeof fn === "function") return this.SantaService.communicate(params, fn, x);
+	    else this.SantaService.communicate(params);
+	},
+	};
+
+	module.exports = SantaService;
 
 	})(window, platformSdk);
 

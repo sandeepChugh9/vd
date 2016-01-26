@@ -24,16 +24,12 @@
                 App.SantaService.getHomeScreen(function (res) {
                     console.log("This is the optin screen buddy");
                     console.log(res);
-                     App.router.navigateTo('/homescreen',{})
+                     App.router.navigateTo('/profile',{})
                 });
             }
 
             else {
-                App.SantaService.getHomeScreen(function (res) {
-                    console.log(res.content);
-                    console.log(res.author.name)
-                     App.router.navigateTo('/homescreen',{})
-                });
+                 App.router.navigateTo('/profile',{})
             }
         });
 
