@@ -667,3 +667,31 @@ color: #999999;
 letter-spacing: 0.43px;
 line-height: 21px;
 }
+
+.profile_pic_select{
+    display: inline-block;
+    margin-top: 32px;
+    background-size: contain !important;
+    background-repeat: no-repeat;
+    width: 72px;
+    height: 72px;
+    margin: 24px 12px;
+    border-radius: 50%;
+    background-position:center;
+}
+
+.profile_pic_select.boy{
+   background: url(images/boy.png);
+}
+
+.profile_pic_select.girl{
+ background: url(images/girl.png);
+}
+
+.profile_pic_select.girl.selected{
+  border:2px solid #C13D3D;
+}
+
+.profile_pic_select.boy.selected{
+  border:2px solid #FFE35D;
+}
