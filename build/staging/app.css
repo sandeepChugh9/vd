@@ -61,8 +61,7 @@ input:focus ~ label, input:valid ~ label {
 /* BOTTOM BARS ================================= */
 .bar {
   position: relative;
-  display: block;
-  width: 300px; }
+  display: block; }
 
 .bar:before, .bar:after {
   content: '';
@@ -645,3 +644,71 @@ a:visited {
   color: #888888;
   font-size: 14px;
   padding-top: 24px; }
+
+#profileSubmit {
+  position: absolute;
+  bottom: 4px;
+  border: 0px;
+  background-color: #FA5643;
+  display: inline-block;
+  text-transform: uppercase;
+  color: white;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 14px 48px;
+  border-radius: 4px;
+  vertical-align: middle; }
+
+.matchPhoto {
+  background: url(images/matchphoto.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  /*min-width: 94%;
+    height: 320px;*/
+  padding-top: 89%;
+  margin: 12px;
+  background-position: center; }
+
+.matchName {
+  font-weight: 400;
+  font-size: 17px;
+  color: #212121;
+  line-height: 20px;
+  padding-top: 10px; }
+
+.matchStatus {
+  font-weight: 400;
+  font-size: 13px;
+  color: #999999;
+  line-height: 12px;
+  padding: 12px 0px 15px; }
+
+.matchWrapper {
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.14); }
+
+.likeSkip .icon {
+  margin-top: 32px;
+  background-size: contain !important;
+  background-repeat: no-repeat;
+  width: 72px;
+  height: 72px;
+  margin: 28px 12px 15px;
+  border-radius: 50%;
+  background-position: center; }
+
+.likeSkip .skip, .likeSkip .like {
+  display: inline-block; }
+
+.likeSkip .skip .icon {
+  background: url(images/skip.png); }
+
+.likeSkip .like .icon {
+  background: url(images/like.png); }
+
+.likeSkip .iconText {
+  /* SKIP: */
+  font-weight: 400;
+  font-size: 12px;
+  color: #999999;
+  letter-spacing: 1px;
+  line-height: 14px; }

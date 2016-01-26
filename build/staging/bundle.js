@@ -4711,16 +4711,16 @@
 	    utils.toggleBackNavigation( true );
 	});
 
-	// First Time User
+	// First Time User Comes Here
 	if ( platformSdk.appData.block === 'true' ) {
 	    console.log( 'User has blocked the Application' );
 	    events.publish( 'app/block', { show: true });
-	} else if ( ! platformSdk.appData.helperData.FtueDone ) {
+	} else if ( ! platformSdk.appData.helperData.subscribed ) {
 	    console.log( 'First Time User' );
 	    self.router.navigateTo( '/' );
 	} else {
 	    console.log( 'Regular User' );
-	    self.router.navigateTo( '/quote', {});
+	    self.router.navigateTo( '/matchscreen', {});
 	}
 	}
 	};
@@ -4750,23 +4750,37 @@
 	        var $el = $(this.el);
 	        
 	        var valentineSubscribe = this.el.getElementsByClassName('valentineSubscribe')[0];
-	        
+	        //console.log(this.el.getElementsByClassName('valentineSubscribe'));
 	        valentineSubscribe.addEventListener('click', function(ev) {
 	            events.publish('update.loader', {show: true});
 
 	            // Update The Helper Data
-	            platformSdk.appData.helperData.FtueDone = true;
-	            platformSdk.updateHelperData(platformSdk.appData.helperData);
-
+	            
 	            if (platformSdk.bridgeEnabled) {
-	                App.SantaService.getHomeScreen(function (res) {
-	                    console.log("This is the optin screen buddy");
-	                    console.log(res);
-	                     App.router.navigateTo('/profile',{});
-	                });
+	                 // App.ValentineServices.subscribeToValentine(function (res) {
+	                 //    console.log(res);
+	                 //    if(res.stat == 'success'){
+	                 //        console.log("Success occured for subscribed");
+	                 //        platformSdk.appData.helperData.FtueDone = true;
+	                 //        platformSdk.updateHelperData(platformSdk.appData.helperData);
+	                 //        App.router.navigateTo('/profile',{});         
+	                 //    }
+	                //      else if(res.stat == "fail"){
+	        //                 events.publish('update.loader', {show: false});
+	        //                 platformSdk.ui.showToast("Something Went Wrong. Please try after some time");
+	        //             }
+	        //             else {
+	        //                 events.publish('update.loader', {show: false});
+	        //                 platformSdk.ui.showToast("Something Went Wrong. Please try after some time");
+	        //             }
+	                    
+	                 // });
+	                App.router.navigateTo('/profile',{});
 	            }
 	            else {
 	                 App.router.navigateTo('/profile',{});
+	                 platformSdk.appData.helperData.FtueDone = true;
+	                platformSdk.updateHelperData(platformSdk.appData.helperData);
 	            }
 	        });
 
@@ -4834,75 +4848,77 @@
 /* 9 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"optInWrapper\">\n\t<div class=\"valentineHeader\">\n\t</div>\n\t<p class=\"vdintro align-center\">Spend this Valentine’s week on hike with your special someone.</p>\n\t<div class=\"valentineButton align-center\">\n\t\t<div class=\"valentineSubscribe align-center buttonTapRed\">Find a Valentine</div>\n\t\t<div class=\"notInterested align-center\">No, I am not interested</div>\n\t</div>\n</div>\n"
+	module.exports = "<div class=\"optInWrapper\">\n\t<div class=\"valentineHeader\">\n\t</div>\n\t<p class=\"vdintro align-center\">Spend this Valentine’s week on hike with your special someone.</p>\n\t<div class=\"valentineButton align-center\">\n\t\t<div class=\"valentineSubscribe align-center buttonTapRed\">Find a Valentine</div>\n\t\t<div class=\"notInterested align-center\">No, I am not interested</div>\n\t</div>\n</div>"
 
 /***/ },
 /* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
-	(function (W, events, utils) {
+	(function( W, events, utils ) {
 	    'use strict';
 
-	    var ProfileController = function (options) {
+	    var ProfileController = function( options ) {
 
-	        this.template = __webpack_require__(11);
+	        this.template = __webpack_require__( 11 );
 	    };
 
-	    ProfileController.prototype.destroy = function () {
-
-	    };
-
-	    ProfileController.prototype.bind = function (App, res) {
-	        var that = this; 
-	        
-
-	        if (platformSdk.bridgeEnabled) {
-	            App.SantaService.getProfile(function (res) {
-	                console.log("I am in the profile page MF");
-	                console.log(res);
-	                //App.router.navigateTo('/profile',{})
-	            });
-	        }
-	        else {
-	            App.SantaService.getProfile(function (res) {
-	                console.log(res.content);
-	                console.log(res.author.name);
-	                //App.router.navigateTo('/profile',{})
-	            });
-	        }
-
+	    ProfileController.prototype.destroy = function() {
 
 	    };
 
+	    ProfileController.prototype.bind = function( App, res ) {
+	        var that = this;
+	        var profile_pic_select = this.el.getElementsByClassName('profile_pic_select');
+	        var continueAction = document.getElementById("profileSubmit");
+	        console.log(continueAction);
 
+	        //console.log(profile_pic_select);
+	         profile_pic_select[0].addEventListener('click', function(ev) {
+	                this.classList.add('selected');
+	                profile_pic_select[1].classList.remove('selected');
+	         });
+	         profile_pic_select[1].addEventListener('click', function(ev) {
+	                this.classList.add('selected');
+	                profile_pic_select[0].classList.remove('selected');
+	         });
 
+	         
 
-	// console.log("hahaga"+quoteContainer);
+	         var form = document.getElementById("profileForm");
+	         //console.log(form);
 
-	//quoteContainer.style.background = "#fff";
+	         continueAction.addEventListener("click", function (ev) {
 
+	                console.log(document.getElementById("profileName").value);
+	                console.log(document.getElementById("profileStatus").value);
+	                console.log(document.getElementById("profileGender").value);
+	                App.router.navigateTo('/matchscreen',{});
+	                //form.submit();
+	                
+	         });   
 
-	ProfileController.prototype.render = function (ctr, App, data) {
+	    };
 
+	    ProfileController.prototype.render = function( ctr, App, data ) {
 
-	    this.el = document.createElement('div');
-	    this.el.className = "quoteContainer animation_fadein noselect";
-	    this.el.innerHTML = Mustache.render(this.template, {quote:data.quote, author:data.author});
-	    ctr.appendChild(this.el);
-	    events.publish('update.loader', {show: false});
-	    this.bind(App, data);
+	    this.el = document.createElement( 'div' );
+	    this.el.className = 'quoteContainer animation_fadein noselect';
+	    this.el.innerHTML = Mustache.render( this.template, { quote:data.quote, author:data.author });
+	    ctr.appendChild( this.el );
+	    events.publish( 'update.loader', { show: false });
+	    this.bind( App, data );
 	};
 
 	module.exports = ProfileController;
 
+	})( window, platformSdk.events, platformSdk.utils );
 
-	})(window, platformSdk.events, platformSdk.utils);
 
 /***/ },
 /* 11 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"ProfileContainer\">\n\t<div class=\"ProfileWrapper\">\n\t\t<div class=\"profile_pic\"></div>\n\t\t<div class=\"details_container\">\n\t\t\t<form>\n\t\t\t\t<div class=\"group\">      \n\t\t\t\t\t<input type=\"text\" required>\n\t\t\t\t\t<span class=\"highlight\"></span>\n\t\t\t\t\t<span class=\"bar\"></span>\n\t\t\t\t\t<label>Name</label>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"group\">      \n\t\t\t\t\t<input type=\"text\" required>\n\t\t\t\t\t<span class=\"highlight\"></span>\n\t\t\t\t\t<span class=\"bar\"></span>\n\t\t\t\t\t<label>Status</label>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"group\">      \n\t\t\t\t\t<input type=\"text\" required>\n\t\t\t\t\t<span class=\"highlight\"></span>\n\t\t\t\t\t<span class=\"bar\"></span>\n\t\t\t\t\t<label>Gender</label>\n\t\t\t\t</div>\n\t\t\t</form>\n\t\t\t<div class=\"align-center lookingfor\">I AM LOOKING FOR</div>\n\t\t\t<div class=\"select_gender align-center\">\n\t\t\t\t<div class=\"profile_pic_select boy\"></div>\n\t\t\t\t<div class=\"profile_pic_select girl selected\"></div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>\n"
+	module.exports = "<div class=\"ProfileContainer\">\n\t<div class=\"ProfileWrapper\">\n\t\t<div class=\"profile_pic\"></div>\n\t\t<div class=\"details_container\">\n\t\t\t<form id=\"profileForm\">\n\t\t\t\t<div class=\"group\">      \n\t\t\t\t\t<input type=\"text\" id=\"profileName\" required>\n\t\t\t\t\t<span class=\"highlight\"></span>\n\t\t\t\t\t<span class=\"bar\"></span>\n\t\t\t\t\t<label>Name</label>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"group\">      \n\t\t\t\t\t<input type=\"text\" id=\"profileStatus\" required>\n\t\t\t\t\t<span class=\"highlight\"></span>\n\t\t\t\t\t<span class=\"bar\"></span>\n\t\t\t\t\t<label>Status</label>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"group\">      \n\t\t\t\t\t<input type=\"text\" id=\"profileGender\" required>\n\t\t\t\t\t<span class=\"highlight\"></span>\n\t\t\t\t\t<span class=\"bar\"></span>\n\t\t\t\t\t<label>Gender</label>\n\t\t\t\t</div>\n\t\t\t\t<button type=\"button\" id=\"profileSubmit\">Continue</button>\n\t\t\t</form>\n\t\t\t<div class=\"align-center lookingfor\">I AM LOOKING FOR</div>\n\t\t\t<div class=\"select_gender align-center\">\n\t\t\t\t<div class=\"profile_pic_select boy\"></div>\n\t\t\t\t<div class=\"profile_pic_select girl selected\"></div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>\n"
 
 /***/ },
 /* 12 */
@@ -4922,21 +4938,7 @@
 
 	    MatchScreenController.prototype.bind = function (App, res) {
 	        var that = this; 
-	        if (platformSdk.bridgeEnabled) {
-	            App.SantaService.getMatchScreen(function (res) {
-	                console.log("I am in the homescreen page MF");
-	                console.log(res);
-	                //App.router.navigateTo('/matchscreen',{})
-	            });
-	        }
-	        else {
-	            App.SantaService.getMatchScreen(function (res) {
-	                console.log(res.content);
-	                console.log(res.author.name)
-	                //App.router.navigateTo('/matchscreen',{})
-	            });
-	        }
-
+	        
 
 	    };
 
@@ -4961,7 +4963,7 @@
 /* 13 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"quoteWrapperContainer\">\n<div class=\"quoteWrapper\">\n\t<p class=\"quote\">Welcome to matchscreen</p>\n\t<p class=\"author\">Yo matchscreen</p>\n</div>\n</div>\n"
+	module.exports = "<div class=\"matchContainer\">\n\t<div class=\"matchWrapper\">\n\t\t<div class=\"matchPhoto\"></div>\n\t\t<div class=\"matchName align-center\">Priya Sharma, 26</div>\n\t\t<div class=\"matchStatus align-center\">There’s only 1 thing 2 do 3 words 4 you – I Love You….</div>\n\n\n\t</div>\n\t<div class=\"likeSkip align-center\">\n\t\t<div class=\"skip\">\n\t\t\t<div class=\"icon\"></div>\n\t\t\t<div class=\"iconText\">SKIP</div>\n\t\t</div>\n\t\t<div class=\"like\">\n\t\t\t<div class=\"icon\"></div>\n\t\t\t<div class=\"iconText\">LIKE</div>\n\t\t</div>\n\t</div>\n</div>\n"
 
 /***/ },
 /* 14 */

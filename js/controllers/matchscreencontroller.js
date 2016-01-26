@@ -12,21 +12,7 @@
 
     MatchScreenController.prototype.bind = function (App, res) {
         var that = this; 
-        if (platformSdk.bridgeEnabled) {
-            App.SantaService.getMatchScreen(function (res) {
-                console.log("I am in the homescreen page MF");
-                console.log(res);
-                //App.router.navigateTo('/matchscreen',{})
-            });
-        }
-        else {
-            App.SantaService.getMatchScreen(function (res) {
-                console.log(res.content);
-                console.log(res.author.name)
-                //App.router.navigateTo('/matchscreen',{})
-            });
-        }
-
+        
 
     };
 

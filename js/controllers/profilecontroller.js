@@ -12,6 +12,34 @@
 
     ProfileController.prototype.bind = function( App, res ) {
         var that = this;
+        var profile_pic_select = this.el.getElementsByClassName('profile_pic_select');
+        var continueAction = document.getElementById("profileSubmit");
+        console.log(continueAction);
+
+        //console.log(profile_pic_select);
+         profile_pic_select[0].addEventListener('click', function(ev) {
+                this.classList.add('selected');
+                profile_pic_select[1].classList.remove('selected');
+         });
+         profile_pic_select[1].addEventListener('click', function(ev) {
+                this.classList.add('selected');
+                profile_pic_select[0].classList.remove('selected');
+         });
+
+         
+
+         var form = document.getElementById("profileForm");
+         //console.log(form);
+
+         continueAction.addEventListener("click", function (ev) {
+
+                console.log(document.getElementById("profileName").value);
+                console.log(document.getElementById("profileStatus").value);
+                console.log(document.getElementById("profileGender").value);
+                App.router.navigateTo('/matchscreen',{});
+                //form.submit();
+                
+         });   
 
     };
 

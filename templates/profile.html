@@ -2,27 +2,28 @@
 	<div class="ProfileWrapper">
 		<div class="profile_pic"></div>
 		<div class="details_container">
-			<form>
+			<form id="profileForm">
 				<div class="group">      
-					<input type="text" required>
+					<input type="text" id="profileName" required>
 					<span class="highlight"></span>
 					<span class="bar"></span>
 					<label>Name</label>
 				</div>
 
 				<div class="group">      
-					<input type="text" required>
+					<input type="text" id="profileStatus" required>
 					<span class="highlight"></span>
 					<span class="bar"></span>
 					<label>Status</label>
 				</div>
 
 				<div class="group">      
-					<input type="text" required>
+					<input type="text" id="profileGender" required>
 					<span class="highlight"></span>
 					<span class="bar"></span>
 					<label>Gender</label>
 				</div>
+				<button type="button" id="profileSubmit">Continue</button>
 			</form>
 			<div class="align-center lookingfor">I AM LOOKING FOR</div>
 			<div class="select_gender align-center">

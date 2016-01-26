@@ -14,7 +14,7 @@
         var $el = $(this.el);
         
         var valentineSubscribe = this.el.getElementsByClassName('valentineSubscribe')[0];
-        
+        //console.log(this.el.getElementsByClassName('valentineSubscribe'));
         valentineSubscribe.addEventListener('click', function(ev) {
             events.publish('update.loader', {show: true});
 
