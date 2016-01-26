@@ -4489,95 +4489,89 @@
 /* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
-	(function (W, events) {
+	(function( W, events ) {
 	    'use strict';
 
-	    var WorkspaceController = __webpack_require__(8),
-	    ProfileController = __webpack_require__(10),
-	    MatchScreenController = __webpack_require__(12),
-	    HomeScreenController = __webpack_require__(14),
+	    var WorkspaceController = __webpack_require__( 8 ),
+	    ProfileController = __webpack_require__( 10 ),
+	    MatchScreenController = __webpack_require__( 12 ),
+	    HomeScreenController = __webpack_require__( 14 ),
 
-	    Router = __webpack_require__(16),
-	    utils = __webpack_require__(4),
+	    Router = __webpack_require__( 16 ),
+	    utils = __webpack_require__( 4 ),
 
-	    TxService = __webpack_require__(17),
-	    SantaServices = __webpack_require__(18);
+	    TxService = __webpack_require__( 17 ),
+	    ValentineServices = __webpack_require__( 18 );
 
-	// Full Screen Loader 
-	var loader = document.getElementById('loader');
-	var loadObject = events.subscribe('update.loader', function (params) {
-	    loader.toggleClass('loading', params.show);
+	// Full Screen Loader
+	var loader = document.getElementById( 'loader' );
+	var loadObject = events.subscribe( 'update.loader', function( params ) {
+	    loader.toggleClass( 'loading', params.show );
 	});
 
 	// Tap State Events :: Touch Start And Touch End
 
-	document.addEventListener('touchstart', function (e) {
+	document.addEventListener( 'touchstart', function( e ) {
 	    e = e || window.event;
 	    var target = e.target;
-	    if (target.classList.contains('buttonTap')) {
-	        target.classList.add('tapState');
-	    }
-	    else if (target.classList.contains('buttonTapRed')) {
-	        target.classList.add('tapStateRed');
-	    }
-	    else if (target.classList.contains('buttonTapOffer')) {
-	        target.classList.add('tapStateOffer');
-	    }
-	    else {
+	    if ( target.classList.contains( 'buttonTap' ) ) {
+	        target.classList.add( 'tapState' );
+	    } else if ( target.classList.contains( 'buttonTapRed' ) ) {
+	        target.classList.add( 'tapStateRed' );
+	    } else if ( target.classList.contains( 'buttonTapOffer' ) ) {
+	        target.classList.add( 'tapStateOffer' );
+	    } else {
 	        return;
 	    }
-	}, false);
+	}, false );
 
-	document.addEventListener('touchend', function (e) {
+	document.addEventListener( 'touchend', function( e ) {
 	    e = e || window.event;
 	    var target = e.target;
-	    if (target.classList.contains('buttonTap')) {
-	        target.classList.remove('tapState');
-	    }
-	    else if (target.classList.contains('buttonTapRed')) {
-	        target.classList.remove('tapStateRed');
-	    }
-	    else if (target.classList.contains('buttonTapOffer')) {
-	        target.classList.remove('tapStateOffer');
-	    }
-	    else {
+	    if ( target.classList.contains( 'buttonTap' ) ) {
+	        target.classList.remove( 'tapState' );
+	    } else if ( target.classList.contains( 'buttonTapRed' ) ) {
+	        target.classList.remove( 'tapStateRed' );
+	    } else if ( target.classList.contains( 'buttonTapOffer' ) ) {
+	        target.classList.remove( 'tapStateOffer' );
+	    } else {
 	        return;
 	    }
-	}, false);
+	}, false );
 
-	document.querySelector('.unblockButton').addEventListener('click', function () {
+	document.querySelector( '.unblockButton' ).addEventListener( 'click', function() {
 	    unBlockApp();
-	}, false);
+	}, false );
 
-	// No Internet Connection Tab 
-	var noInternet = document.getElementById('nointernet');
-	var noInternetObject = events.subscribe('app/offline', function (params) {
-	    noInternet.toggleClass('no-internet-msg', params.show);
+	// No Internet Connection Tab
+	var noInternet = document.getElementById( 'nointernet' );
+	var noInternetObject = events.subscribe( 'app/offline', function( params ) {
+	    noInternet.toggleClass( 'no-internet-msg', params.show );
 	});
 
-	// Block Connection Tab 
-	var isBlock = document.getElementById('blockScreen');
-	var isBlockObject = events.subscribe('app/block', function (params) {
-	    isBlock.toggleClass('block-msg', params.show);
+	// Block Connection Tab
+	var isBlock = document.getElementById( 'blockScreen' );
+	var isBlockObject = events.subscribe( 'app/block', function( params ) {
+	    isBlock.toggleClass( 'block-msg', params.show );
 	});
 
-	var unBlockApp = function () {
+	var unBlockApp = function() {
 	    var self = this;
-	    var id = '' + platformSdk.retrieveId('app.menu.om.block');
+	    var id = '' + platformSdk.retrieveId( 'app.menu.om.block' );
 
-	    platformSdk.appData.block = "false";
-	    if (platformSdk.bridgeEnabled) platformSdk.unblockChatThread();
-	    platformSdk.events.publish('app.state.block.hide');
-	    platformSdk.updateOverflowMenu(id, {
-	        "title": "Block"
+	    platformSdk.appData.block = 'false';
+	    if ( platformSdk.bridgeEnabled ) platformSdk.unblockChatThread();
+	    platformSdk.events.publish( 'app.state.block.hide' );
+	    platformSdk.updateOverflowMenu( id, {
+	        'title': 'Block'
 	    });
 
-	    utils.toggleBackNavigation(false);        
-	    events.publish('update.loader', {show: false});
-	    events.publish('app/block', {show: false});
+	    utils.toggleBackNavigation( false );
+	    events.publish( 'update.loader', { show: false });
+	    events.publish( 'app/block', { show: false });
 	};
 
-	var Application = function (options) {
+	var Application = function( options ) {
 	    this.container = options.container;
 	    this.routeIntent = options.route;
 
@@ -4589,150 +4583,152 @@
 	    this.MatchScreenController = new MatchScreenController();
 
 	    this.TxService = new TxService();
-	this.SantaService = new SantaServices(this.TxService); //communication layer
+	    this.ValentineServices = new ValentineServices( this.TxService ); //communication layer
 	};
 
 	Application.prototype = {
 
 	// Setting Up The Three Dot Menu
-	initOverflowMenu: function () {
+	initOverflowMenu: function() {
 	    var omList = [{
-	        "title": platformSdk.appData.block === "true" ? "Unblock" : "Block",
-	        "en": "true",
-	        "eventName": "app.menu.om.block"
+	        'title': platformSdk.appData.block === 'true' ? 'Unblock' : 'Block',
+	        'en': 'true',
+	        'eventName': 'app.menu.om.block'
 	    },
 	    {
-	        "title": "Notifications",
-	        "en": "true",
-	        "eventName": "app.menu.om.mute",
-	        "is_checked": platformSdk.appData.mute === "true" ? "false" : "true"
+	        'title': 'Notifications',
+	        'en': 'true',
+	        'eventName': 'app.menu.om.mute',
+	        'is_checked': platformSdk.appData.mute === 'true' ? 'false' : 'true'
 	    }];
 
 	// Notifications
-	platformSdk.events.subscribe('app.menu.om.mute', function (id) {
-	    id = "" + platformSdk.retrieveId('app.menu.om.mute');
-	    if (platformSdk.appData.mute == "true") {
-	        platformSdk.appData.mute = "false";
+	platformSdk.events.subscribe( 'app.menu.om.mute', function( id ) {
+	    id = '' + platformSdk.retrieveId( 'app.menu.om.mute' );
+	    if ( platformSdk.appData.mute == 'true' ) {
+	        platformSdk.appData.mute = 'false';
 	        platformSdk.muteChatThread();
-	        platformSdk.updateOverflowMenu(id, {
-	            "is_checked": "true"
+	        platformSdk.updateOverflowMenu( id, {
+	            'is_checked': 'true'
 	        });
 	    } else {
-	        platformSdk.appData.mute = "true";
+	        platformSdk.appData.mute = 'true';
 	        platformSdk.muteChatThread();
-	        platformSdk.updateOverflowMenu(id, {
-	            "is_checked": "false"
+	        platformSdk.updateOverflowMenu( id, {
+	            'is_checked': 'false'
 	        });
 	    }
 	});
+
 	// Block
-	platformSdk.events.subscribe('app.menu.om.block', function (id) {
-	    id = "" + platformSdk.retrieveId('app.menu.om.block');
-	    if (platformSdk.appData.block === "true") {
+	platformSdk.events.subscribe( 'app.menu.om.block', function( id ) {
+	    id = '' + platformSdk.retrieveId( 'app.menu.om.block' );
+	    if ( platformSdk.appData.block === 'true' ) {
 	        unBlockApp();
 	    } else {
-	        platformSdk.appData.block = "true";
+	        platformSdk.appData.block = 'true';
 	        platformSdk.blockChatThread();
-	        platformSdk.events.publish('app.state.block.show');
-	        platformSdk.updateOverflowMenu(id, {
-	            "title": "Unblock"
+	        platformSdk.events.publish( 'app.state.block.show' );
+	        platformSdk.updateOverflowMenu( id, {
+	            'title': 'Unblock'
 	        });
-	        utils.toggleBackNavigation(false);
-	        events.publish('app/block', {show: true});
-	        events.publish('app/offline', {show: false});
+	        utils.toggleBackNavigation( false );
+	        events.publish( 'app/block', { show: true });
+	        events.publish( 'app/offline', { show: false });
 	    }
 	});
 
-	platformSdk.setOverflowMenu(omList);
+	platformSdk.setOverflowMenu( omList );
 	},
 
-	backPressTrigger: function () {
+	backPressTrigger: function() {
 	    this.router.back();
 	},
 
-	getRoute: function () {
+	getRoute: function() {
 	    var that = this;
 
 	// ToDo: Remvove tihs if block from here?
-	if (this.routeIntent !== undefined) {
+	if ( this.routeIntent !== undefined ) {
 
 	} else {
-	    events.publish('app.store.get', {
+	    events.publish( 'app.store.get', {
 	        key: '_routerCache',
 	        ctx: this,
-	        cb: function (r) {
-	            if (r.status === 1 && platformSdk.bridgeEnabled) {
+	        cb: function( r ) {
+	            if ( r.status === 1 && platformSdk.bridgeEnabled ) {
 	                try {
-	                    that.router.navigateTo(r.results.route, r.results.cache);
-	                } catch (e) {
-	                    that.router.navigateTo('/');
+	                    that.router.navigateTo( r.results.route, r.results.cache );
+	                } catch ( e ) {
+	                    that.router.navigateTo( '/' );
 	                }
 	            } else {
-	                that.router.navigateTo('/');
+	                that.router.navigateTo( '/' );
 	            }
 	        }
 	    });
 	}
 	},
 
-	start: function () {
+	start: function() {
 
 	    var self = this;
-	    self.$el = $(this.container);
+	    self.$el = $( this.container );
 	    self.initOverflowMenu();
 
-	    utils.toggleBackNavigation(false);
+	    utils.toggleBackNavigation( false );
 
-	    platformSdk.events.subscribe('onBackPressed', function () {
+	    platformSdk.events.subscribe( 'onBackPressed', function() {
 	        self.backPressTrigger();
 	    });
 
-	    platformSdk.events.subscribe('onUpPressed', function () {
+	    platformSdk.events.subscribe( 'onUpPressed', function() {
 	        self.backPressTrigger();
 	    });
 
 	// Subscribe :: Workspace
-	this.router.route('/', function (data) {
-	    self.container.innerHTML = "";
-	    self.workspaceController.render(self.container, self, data);
-	    utils.toggleBackNavigation(false);
+	this.router.route( '/', function( data ) {
+	    self.container.innerHTML = '';
+	    self.workspaceController.render( self.container, self, data );
+	    utils.toggleBackNavigation( false );
 	});
 
-	this.router.route('/homescreen', function (data) {
-	    self.container.innerHTML = "";
-	    self.HomeController.render(self.container, self, data);
-	    utils.toggleBackNavigation(true);
+	this.router.route( '/homescreen', function( data ) {
+	    self.container.innerHTML = '';
+	    self.HomeController.render( self.container, self, data );
+	    utils.toggleBackNavigation( true );
 	});
 
-	this.router.route('/profile', function (data) {
-	    self.container.innerHTML = "";
-	    self.ProfileController.render(self.container, self, data);
-	    utils.toggleBackNavigation(true);
+	this.router.route( '/profile', function( data ) {
+	    self.container.innerHTML = '';
+	    self.ProfileController.render( self.container, self, data );
+	    utils.toggleBackNavigation( true );
 	});
 
-	this.router.route('/matchscreen', function (data) {
-	    self.container.innerHTML = "";
-	    self.MatchScreenController.render(self.container, self, data);
-	    utils.toggleBackNavigation(true);
+	this.router.route( '/matchscreen', function( data ) {
+	    self.container.innerHTML = '';
+	    self.MatchScreenController.render( self.container, self, data );
+	    utils.toggleBackNavigation( true );
 	});
 
 	// First Time User
-	if (platformSdk.appData.block === "true") {
-	    console.log("User has blocked the Application");
-	    events.publish('app/block', {show: true});  
-	} else if (!platformSdk.appData.helperData.FtueDone) {
-	    console.log("First Time User");
-	    self.router.navigateTo('/');
+	if ( platformSdk.appData.block === 'true' ) {
+	    console.log( 'User has blocked the Application' );
+	    events.publish( 'app/block', { show: true });
+	} else if ( ! platformSdk.appData.helperData.FtueDone ) {
+	    console.log( 'First Time User' );
+	    self.router.navigateTo( '/' );
 	} else {
-	    console.log("Regular User");
-	    self.router.navigateTo('/quote', {});
+	    console.log( 'Regular User' );
+	    self.router.navigateTo( '/quote', {});
 	}
 	}
 	};
 
 	module.exports = Application;
 
-	})(window, platformSdk.events);
+	})( window, platformSdk.events );
+
 
 /***/ },
 /* 8 */
@@ -5257,126 +5253,37 @@
 /* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
-	(function (W, platformSdk) {
+	(function( W, platformSdk ) {
 	    'use strict';
 
-	    var utils = __webpack_require__(4);
+	    var utils = __webpack_require__( 4 );
 	    var checkTimeout = null;
 
-	    var SantaService = function (service) {
-	        this.SantaService = service;
+	    var ValentineServices = function( service ) {
+	        this.ValentineServices = service;
 	    };
 
 	    var URL = {
-	        location: 'https://wisdomapi.herokuapp.com/v1/random',
+	        location: appConfig.API_URL
 	    };
 
-	    SantaService.prototype = {
+	    ValentineServices.prototype = {
 
-	        getProfile: function(fn, x){
+	        subscribeToValentine: function( fn, x ) {
 	            var params = {
-	                'url': URL.location, 
-	                'type': 'GET', 
+	                'url': URL.location + '/subscribe',
+	                'type': 'POST'
 	            };
-
-	            if (typeof fn === "function") return this.SantaService.communicate(params, fn, x);
-	            else this.SantaService.communicate(params);
+	            if ( typeof fn === 'function' ) return this.ValentineServices.communicate( params, fn, x );
+	            else this.ValentineServices.communicate( params );
 	        },
 
-	        getHomeScreen: function(fn, x){
-	            var params = {
-	                'url': URL.location, 
-	                'type': 'GET', 
-	            };
-
-	            if (typeof fn === "function") return this.SantaService.communicate(params, fn, x);
-	            else this.SantaService.communicate(params);
-	        },
-	// Subscribe URL
-	getMatchScreen: function(fn, x){
-	    var params = {
-	        'url': URL.location, 
-	        'type': 'GET', 
-	    };
-
-	    if (typeof fn === "function") return this.SantaService.communicate(params, fn, x);
-	    else this.SantaService.communicate(params);
-	},
-
-
-	subscribeToSecretSanta: function(fn, x){
-	    var params = {
-	        'url': URL.location+'/subscribe', 
-	        'type': 'POST'
-	    };
-	    if (typeof fn === "function") return this.SantaService.communicate(params, fn, x);
-	    else this.SantaService.communicate(params);
-	},
-
-	// Get Reward Status and Rewards
-
-	getRewards: function(fn, x){
-	    var params = {
-	        'url': URL.location +  '/rewards', 
-	        'type': 'GET', 
-	    };
-
-	    if (typeof fn === "function") return this.SantaService.communicate(params, fn, x);
-	    else this.SantaService.communicate(params);
-	},
-
-	// Assignment Status
-
-	getAssignmentStatus: function(fn, x){
-	    var params = {
-	        'url': URL.location+'/assignment_status', 
-	        'type': 'GET', 
-	    };
-
-	    if (typeof fn === "function") return this.SantaService.communicate(params, fn, x);
-	    else this.SantaService.communicate(params);
-	},
-
-	// Confirm The Send Of The Gift
-
-	sendGift: function(data, fn, x){
-	    var params = {
-	        'url': URL.location +  '/rewards', 
-	        'type': 'POST', 
-	        'data': data,
-	    };
-
-	    if (typeof fn === "function") return this.SantaService.communicate(params, fn, x);
-	    else this.SantaService.communicate(params);
-	},
-
-	invokeChat: function(data, fn, x){
-	    var params = {
-	        'url': URL.location +  '/invoke_chat', 
-	        'type': 'POST', 
-	        'data': data,
-	    };
-
-	    if (typeof fn === "function") return this.SantaService.communicate(params, fn, x);
-	    else this.SantaService.communicate(params);
-	},
-
-	// Reveal The Gift That Was Received By The User
-
-	revealGift: function(fn, x){
-	    var params = {
-	        'url': URL.location +  '/show_rewards',
-	        'type': 'GET',
-	    };
-
-	    if (typeof fn === "function") return this.SantaService.communicate(params, fn, x);
-	    else this.SantaService.communicate(params);
-	},
 	};
 
-	module.exports = SantaService;
+	module.exports = ValentineServices;
 
-	})(window, platformSdk);
+	})( window, platformSdk );
+
 
 /***/ }
 /******/ ]);
