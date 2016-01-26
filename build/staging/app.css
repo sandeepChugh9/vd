@@ -148,7 +148,7 @@ a:visited {
   left: 0px;
   right: 0px; }
 
-.secretSantaLogo {
+.valentineHeader {
   background: url(images/ftue-image.png);
   background-size: contain;
   background-repeat: no-repeat;
@@ -157,14 +157,14 @@ a:visited {
   margin: 0px auto;
   background-position: center; }
 
-.christmasContainer p.ssintro {
+.christmasContainer p.vdintro {
   color: #212121;
   font-size: 15px;
   margin: 32px 43px 64px 43px;
   font-weight: 400;
   line-height: 20px; }
 
-.secretSantaButton .santaSubscribe {
+.valentineButton .valentineSubscribe {
   background-color: #FA5643;
   display: inline-block;
   text-transform: uppercase;
@@ -482,23 +482,12 @@ a:visited {
   -ms-user-select: none;
   user-select: none; }
 
-@media screen and (max-height: 510px) and (-webkit-max-device-pixel-ratio: 1.9) {
-  .secretSantaLogo {
-    width: 240px;
-    height: 132px; }
-  .christmasContainer p.ssintro {
-    margin: 28px 43px 54px 43px;
-    font-size: 14px; }
-  .secretSantaButton .santaSubscribe {
-    font-size: 12px;
-    padding: 10px 20px; } }
-
 .ellipsis {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden; }
 
-.not-interested {
+.notInterested {
   color: #888888;
   font-size: 14px;
   padding-top: 24px; }

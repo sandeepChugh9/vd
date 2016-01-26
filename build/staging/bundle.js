@@ -4748,24 +4748,25 @@
 
 	    WorkspaceController.prototype.bind = function (App) {
 	        var $el = $(this.el);
-	        var quoteSubscribe = this.el.getElementsByClassName('santaSubscribe')[0];
-	        quoteSubscribe.addEventListener('click', function(ev) {
+	        
+	        var valentineSubscribe = this.el.getElementsByClassName('valentineSubscribe')[0];
+	        
+	        valentineSubscribe.addEventListener('click', function(ev) {
 	            events.publish('update.loader', {show: true});
-	            console.log("quoteSubscribe");
+
+	            // Update The Helper Data
 	            platformSdk.appData.helperData.FtueDone = true;
 	            platformSdk.updateHelperData(platformSdk.appData.helperData);
-
 
 	            if (platformSdk.bridgeEnabled) {
 	                App.SantaService.getHomeScreen(function (res) {
 	                    console.log("This is the optin screen buddy");
 	                    console.log(res);
-	                     App.router.navigateTo('/profile',{})
+	                     App.router.navigateTo('/profile',{});
 	                });
 	            }
-
 	            else {
-	                 App.router.navigateTo('/profile',{})
+	                 App.router.navigateTo('/profile',{});
 	            }
 	        });
 
@@ -4833,7 +4834,7 @@
 /* 9 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"optInWrapper\">\n\t<div class=\"secretSantaLogo\">\n\t</div>\n\t<p class=\"ssintro align-center\">Spend this Valentine’s week on hike with your special someone.</p>\n\t<div class=\"secretSantaButton align-center\">\n\t\t<div class=\"santaSubscribe align-center buttonTapRed\">Find a Valentine</div>\n\t\t<div class=\"not-interested align-center\">No, I am not interested</div>\n\t</div>\n</div>\n"
+	module.exports = "<div class=\"optInWrapper\">\n\t<div class=\"valentineHeader\">\n\t</div>\n\t<p class=\"vdintro align-center\">Spend this Valentine’s week on hike with your special someone.</p>\n\t<div class=\"valentineButton align-center\">\n\t\t<div class=\"valentineSubscribe align-center buttonTapRed\">Find a Valentine</div>\n\t\t<div class=\"notInterested align-center\">No, I am not interested</div>\n\t</div>\n</div>\n"
 
 /***/ },
 /* 10 */
@@ -4901,7 +4902,7 @@
 /* 11 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"ProfileContainer\">\n\t<div class=\"ProfileWrapper\">\n\t\t<div class=\"profile_pic\"></div>\n\t\t<div class=\"details_container\">\n\n\t\t\t<form>\n\n\t\t\t\t<div class=\"group\">      \n\t\t\t\t\t<input type=\"text\" required>\n\t\t\t\t\t<span class=\"highlight\"></span>\n\t\t\t\t\t<span class=\"bar\"></span>\n\t\t\t\t\t<label>Name</label>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"group\">      \n\t\t\t\t\t<input type=\"text\" required>\n\t\t\t\t\t<span class=\"highlight\"></span>\n\t\t\t\t\t<span class=\"bar\"></span>\n\t\t\t\t\t<label>Status</label>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"group\">      \n\t\t\t\t\t<input type=\"text\" required>\n\t\t\t\t\t<span class=\"highlight\"></span>\n\t\t\t\t\t<span class=\"bar\"></span>\n\t\t\t\t\t<label>Gender</label>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"group\">      \n\t\t\t\t\t<input type=\"text\" required>\n\t\t\t\t\t<span class=\"highlight\"></span>\n\t\t\t\t\t<span class=\"bar\"></span>\n\t\t\t\t\t<label>Age</label>\n\t\t\t\t</div>\n\t\t\t</form>\n\t\t\t<div class=\"align-center lookingfor\">I AM LOOKING FOR</div>\n\n\t\t</div>\n\t</div>\n</div>\n"
+	module.exports = "<div class=\"ProfileContainer\">\n\t<div class=\"ProfileWrapper\">\n\t\t<div class=\"profile_pic\"></div>\n\t\t<div class=\"details_container\">\n\t\t\t<form>\n\t\t\t\t<div class=\"group\">      \n\t\t\t\t\t<input type=\"text\" required>\n\t\t\t\t\t<span class=\"highlight\"></span>\n\t\t\t\t\t<span class=\"bar\"></span>\n\t\t\t\t\t<label>Name</label>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"group\">      \n\t\t\t\t\t<input type=\"text\" required>\n\t\t\t\t\t<span class=\"highlight\"></span>\n\t\t\t\t\t<span class=\"bar\"></span>\n\t\t\t\t\t<label>Status</label>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"group\">      \n\t\t\t\t\t<input type=\"text\" required>\n\t\t\t\t\t<span class=\"highlight\"></span>\n\t\t\t\t\t<span class=\"bar\"></span>\n\t\t\t\t\t<label>Gender</label>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"group\">      \n\t\t\t\t\t<input type=\"text\" required>\n\t\t\t\t\t<span class=\"highlight\"></span>\n\t\t\t\t\t<span class=\"bar\"></span>\n\t\t\t\t\t<label>Age</label>\n\t\t\t\t</div>\n\t\t\t</form>\n\t\t\t<div class=\"align-center lookingfor\">I AM LOOKING FOR</div>\n\n\t\t</div>\n\t</div>\n</div>\n"
 
 /***/ },
 /* 12 */

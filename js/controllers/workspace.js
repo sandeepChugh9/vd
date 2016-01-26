@@ -12,24 +12,25 @@
 
     WorkspaceController.prototype.bind = function (App) {
         var $el = $(this.el);
-        var quoteSubscribe = this.el.getElementsByClassName('santaSubscribe')[0];
-        quoteSubscribe.addEventListener('click', function(ev) {
+        
+        var valentineSubscribe = this.el.getElementsByClassName('valentineSubscribe')[0];
+        
+        valentineSubscribe.addEventListener('click', function(ev) {
             events.publish('update.loader', {show: true});
-            console.log("quoteSubscribe");
+
+            // Update The Helper Data
             platformSdk.appData.helperData.FtueDone = true;
             platformSdk.updateHelperData(platformSdk.appData.helperData);
-
 
             if (platformSdk.bridgeEnabled) {
                 App.SantaService.getHomeScreen(function (res) {
                     console.log("This is the optin screen buddy");
                     console.log(res);
-                     App.router.navigateTo('/profile',{})
+                     App.router.navigateTo('/profile',{});
                 });
             }
-
             else {
-                 App.router.navigateTo('/profile',{})
+                 App.router.navigateTo('/profile',{});
             }
         });
 
